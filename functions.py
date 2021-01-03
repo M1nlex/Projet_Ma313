@@ -16,34 +16,26 @@ def ResolMCEN(A, b):
 
     return x
 
-
-
-
 def ResolMCQr(A,b):
-    pass
+    Q,R = DecompositionGS2(A)
+    return fct.ResolTriSup(R,Q.T@b)
 
 def ResolMCNP(A,b):
     pass
 
-def DecompositionGS(A):
-    """ Calcul de la décomposition QR de A une matrice carrée.
-    L'algorithme de Gram-Schmidt est utilisé.
-    La fonction renvoit (Q,R) """
-    n,m=A.shape
-    if n < m :
-        raise Exception('Matrice mal dimensionnée')
+def DecompositionGS2(A):
+    m,n = A.shape
+    v = np.zeros((m,n))
+    R = np.zeros((n,n))
+    Q = np.zeros((m,n))
 
-    Q=np.zeros((n,m))
-    R=np.zeros((n,m))
-    for j in range(n):
-        for i in range(j):
-            R[i,j]=Q[:,i]@A[:,j]
-        w=A[:,j]
-        for k in range(j):
-            w=w-R[k,j]*Q[:,k]
-        norme=np.linalg.norm(w)
-        if norme ==0:
-            raise Exception('Matrice non inversible')
-        R[j,j]=norme
-        Q[:,j]=w/norme
+    for j in range(0,n):
+        v[:,j] = A[:,j]
+        for i in range(0,j):
+            R[i,j] = np.dot( (Q[:,i].conjugate()).T, A[:,j] )
+            v[:,j] = v[:,j] - R[i,j]*Q[:,i]
+
+        R[j,j] = np.linalg.norm(v[:,j],2)
+        Q[:,j] = v[:,j]/R[j,j]
+
     return Q,R
