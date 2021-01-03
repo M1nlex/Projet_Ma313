@@ -13,8 +13,8 @@ def ResolMCEN(A, b):
 
     y = fct.ResolTriInf(l, bb)
     x = fct.ResolTriSup(lt, y)
-
-    return x
+    er = np.linalg.norm(A@x-b)
+    return x, er
 
 
 
@@ -22,8 +22,10 @@ def ResolMCEN(A, b):
 def ResolMCQr(A,b):
     pass
 
-def ResolMCNP(A,b):
-    pass
+
+def ResolMCNP(A, b):
+    x = (np.linalg.lstsq(A, b, rcond=None))
+    return x[0], x[1]
 
 def DecompositionGS(A):
     """ Calcul de la décomposition QR de A une matrice carrée.
