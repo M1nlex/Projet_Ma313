@@ -3,7 +3,7 @@ import function_base as fct
 import matplotlib.pyplot as plt
 
 
-def ResolMCEN(A,b):
+def ResolMCEN(A, b):
     aa = A.T@A
     bb = A.T@b
     #return np.linalg.solve(aa,bb)
