@@ -23,21 +23,21 @@ def Cholesky(A):
     La fonction rend L.
     """
 
-    n,m=A.shape
+    n, m = A.shape
     if n != m:
         raise Exception('Matrice non carrée')
-    L=np.zeros((n,n))
+    L = np.zeros((n , n))
     for i in range(n):
-        s=0.
+        s = 0.
         for j in range(i):
-            s=s+L[i,j]**2
-        R=A[i,i]-s
-        if R<=0:
+            s = s+L[i , j]**2
+        R = A[i, i]-s
+        if R <= 0:
             raise Exception('Matrice non définie positive')
-        L[i,i]=np.sqrt(R)
-        for j in range(i+1,n):
-            s=0.
+        L[i, i] = np.sqrt(R)
+        for j in range(i+1, n):
+            s = 0.
             for k in range(i):
-                s=s+L[i,k]*L[j,k]
-            L[j,i]=(A[j,i]-s)/L[i,i]
+                s = s+L[i, k]*L[j, k]
+            L[j, i] = (A[j, i]-s)/L[i, i]
     return L
