@@ -13,15 +13,17 @@ def ResolMCEN(A, b):
 
     y = fct.ResolTriInf(l, bb)
     x = fct.ResolTriSup(lt, y)
-
-    return x
+    er = np.linalg.norm(A@x-b)
+    return x, er
 
 def ResolMCQr(A,b):
     Q,R = DecompositionGS2(A)
     return fct.ResolTriSup(R,Q.T@b)
 
-def ResolMCNP(A,b):
-    pass
+
+def ResolMCNP(A, b):
+    x = (np.linalg.lstsq(A, b, rcond=None))
+    return x[0], x[1]
 
 def DecompositionGS2(A):
     m,n = A.shape
