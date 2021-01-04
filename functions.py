@@ -72,19 +72,26 @@ def cercle():
 
     n = x.size
     a = np.ones((n, 3))
-    a[:, 1] = x
-    a[:, 2] = x**2
+    b = np.ones((n, 1))
 
-    result, er = ResolMCEN(a, y)
+    a[:, 0] = 2*x
+    a[:, 1] = 2*y
+
+    b[:, 0] = x**2+y**2
+
+
+    print(a)
+
+    result, er = ResolMCEN(a, b)
 
     alpha, beta, gamma = result
 
     x0 = alpha
     y0 = beta
-    r = np.sqrt(alpha**2 + beta**2 + gamma**2)
+    r = np.sqrt(alpha**2 + beta**2 + gamma)
     x1, y1 = draw_circle(x0, y0, r)
 
-    plt.plot(x1, y1)
+    plt.scatter(x1, y1)
     plt.scatter(x, y)
     plt.show()
 
@@ -95,8 +102,8 @@ def draw_circle(x0, y0, r):
     y = []
 
     for i in np.arange(-r+x0, r+x0, 0.01):
-        for j in np.arange(-r+y0, r+y0, 0.010):
-            if pow(i - x0, 2) + pow(j - y0, 2) <= r**2:
+        for j in np.arange(-r+y0, r+y0, 0.01):
+            if r**2 >= pow(i - x0, 2) + pow(j - y0, 2) >= (r ** 2)-0.5:
                 x.append(i)
                 y.append(j)
 
