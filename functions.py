@@ -16,6 +16,7 @@ def ResolMCEN(A, b):
     er = np.linalg.norm(A@x-b)
     return x, er
 
+
 def ResolMCQr(A,b):
     Q,R = DecompositionGS2(A)
     return fct.ResolTriSup(R,Q.T@b)
@@ -23,7 +24,9 @@ def ResolMCQr(A,b):
 
 def ResolMCNP(A, b):
     x = (np.linalg.lstsq(A, b, rcond=None))
-    return x[0], x[1]
+    er = np.linalg.norm(A@x[0]-b)
+    return x[0], er
+
 
 def DecompositionGS2(A):
     m,n = A.shape
@@ -41,3 +44,21 @@ def DecompositionGS2(A):
         Q[:,j] = v[:,j]/R[j,j]
 
     return Q,R
+
+
+def test_minimum(a, b):
+
+    x, er = ResolMCEN(a, b)
+
+    for w in range(0, 10**6):
+
+        x1 = np.zeros((len(x), 1))
+        for i in range(len(x)):
+            temp = np.random.randn(1)/2000
+            x1[i][0] = x[i] + temp
+
+        if np.linalg.norm(x-x1) < 10**-3:
+            if np.linalg.norm(a@x-b) >= np.linalg.norm(a@x1-b):
+                print('nope')
+
+        print(w)
