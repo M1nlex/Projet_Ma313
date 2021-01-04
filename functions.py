@@ -61,3 +61,47 @@ def test_minimum(a, b):
             if np.linalg.norm(a@x-b) >= np.linalg.norm(a@x1-b):
                 print('nope')
         print(w)
+
+
+def cercle():
+
+    donne_x, donne_y = fct.donnees_partie3()
+
+    x = np.array(donne_x)
+    y = np.array(donne_y)
+
+    n = x.size
+    a = np.ones((n, 3))
+    a[:, 1] = x
+    a[:, 2] = x**2
+
+    result, er = ResolMCEN(a, y)
+
+    alpha, beta, gamma = result
+
+    x0 = alpha
+    y0 = beta
+    r = np.sqrt(alpha**2 + beta**2 + gamma**2)
+    x1, y1 = draw_circle(x0, y0, r)
+
+    plt.plot(x1, y1)
+    plt.scatter(x, y)
+    plt.show()
+
+
+def draw_circle(x0, y0, r):
+
+    x = []
+    y = []
+
+    for i in np.arange(-r+x0, r+x0, 0.01):
+        for j in np.arange(-r+y0, r+y0, 0.010):
+            if pow(i - x0, 2) + pow(j - y0, 2) <= r**2:
+                x.append(i)
+                y.append(j)
+
+    print(x, y)
+
+    return x, y
+
+
