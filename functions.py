@@ -79,9 +79,6 @@ def cercle():
 
     b[:, 0] = x**2+y**2
 
-
-    print(a)
-
     result, er = ResolMCEN(a, b)
 
     alpha, beta, gamma = result
@@ -91,8 +88,8 @@ def cercle():
     r = np.sqrt(alpha**2 + beta**2 + gamma)
     x1, y1 = draw_circle(x0, y0, r)
 
-    plt.scatter(x1, y1)
-    plt.scatter(x, y)
+    plt.scatter(x1, y1, s=2)
+    plt.scatter(x, y, s=20)
     plt.show()
 
 
