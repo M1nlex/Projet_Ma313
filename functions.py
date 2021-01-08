@@ -45,22 +45,56 @@ def DecompositionGS2(A):
     return Q, R
 
 
-def test_minimum(a, b):
+def test_minimum(a, b, nbr_tests = 10**6):
 
-    x, er = ResolMCEN(a, b)
+    x1, er1 = ResolMCEN(a, b)
+    x2 = ResolMCQr(a, b)
+    x3, er3 = ResolMCNP(a, b)
 
-    for w in range(0, 10**6):
+    listeRes1 = []
+    listeRes2 = []
+    listeRes3 = []
+    for w in range(0, nbr_tests):
 
-        x1 = np.zeros((len(x), 1))
-        for i in range(len(x)):
+        X1 = np.zeros((len(x1), 1))
+        X2 = np.zeros((len(x1), 1))
+        X3 = np.zeros((len(x1), 1))
+
+        for i in range(len(x1)):
             temp = np.random.randn(1)/2000
-            x1[i][0] = x[i] + temp
+            X1[i][0] = X1[i] + temp
+            X2[i][0] = X2[i] + temp
+            X3[i][0] = X3[i] + temp
 
-        if np.linalg.norm(x-x1) < 10**-3:
-            if np.linalg.norm(a@x-b) >= np.linalg.norm(a@x1-b):
-                print('nope')
+        if np.linalg.norm(x1-X1) < 10**-3:
+            if np.linalg.norm(a@x1-b) >= np.linalg.norm(a@X-b):
+                listeRes1.append(0)
+            else:
+                listeRes1.append(1)
+                print("imprécision sur méthode 1")
+
+        if np.linalg.norm(x2-X2) < 10**-3:
+            if np.linalg.norm(a@x2-b) >= np.linalg.norm(a@X2-b):
+                listeRes2.append(0)
+            else:
+                listeRes2.append(1)
+                print("imprécision sur méthode 2")
+
+        if np.linalg.norm(x3-X3) < 10**-3:
+            if np.linalg.norm(a@x3-b) >= np.linalg.norm(a@X3-b):
+                listeRes3.append(0)
+            else:
+                listeRes3.append(1)
+                print("imprécision sur méthode 3")
+
         print(w)
-
+    liste_abscisse = range(0, nbr_tests)
+    plt.plot(liste_abscisse,listeRes1,label="équations normales")
+    plt.plot(liste_abscisse,listeRes2,label="décomposition QR")
+    plt.plot(liste_abscisse,listeRes3,label="méthode numpy")
+    plt.legend()
+    plt.title("Vérification de la justesse des résultats",loc="lower right")
+    plt.plot()
 
 def cercle():
 
@@ -106,5 +140,3 @@ def draw_circle(x0, y0, r):
     print(x, y)
 
     return x, y
-
-
