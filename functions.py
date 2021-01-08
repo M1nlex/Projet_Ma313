@@ -60,7 +60,7 @@ def test_minimum(a, b, nbr_tests = 10**6):
         X3 = np.zeros((len(x1), 1))
 
         for i in range(len(x1)):
-            temp = np.random.randn(1)/5000
+            temp = np.random.randn(1)/100000
             X1[i][0] = x1[i] + temp
             X2[i][0] = x2[i] + temp
             X3[i][0] = x3[i] + temp
@@ -91,7 +91,7 @@ def test_minimum(a, b, nbr_tests = 10**6):
 
         #print(w)
     liste_abscisse = range(0, nbr_tests)
-    print(len(liste_abscisse), len(listeRes1), len(listeRes2), len(listeRes3))
+
     plt.scatter(liste_abscisse,listeRes1,label="équations normales")
     plt.scatter(liste_abscisse,listeRes2,label="décomposition QR")
     plt.scatter(liste_abscisse,listeRes3,label="méthode numpy")
