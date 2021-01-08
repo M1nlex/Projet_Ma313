@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 def ResolMCEN(A, b):
     aa = A.T@A
     bb = A.T@b
-    #return np.linalg.solve(aa,bb)
 
     l = fct.Cholesky(aa)
     lt = l.T
@@ -24,8 +23,7 @@ def ResolMCQr(A, b):
 
 def ResolMCNP(a, b):
     x = (np.linalg.lstsq(a, b, rcond=None))
-    er = np.linalg.norm(a@x[0]-b)
-    return x[0], er
+    return x[0], float(x[1]**(1/2))
 
 
 def DecompositionGS2(A):
@@ -101,7 +99,8 @@ def test_minimum(a, b, nbr_tests = 10**6):
     plt.title("Vérification de la justesse des résultats")
     plt.show()
 
-def cercle():
+
+def cercle(methode=0):
 
     donne_x, donne_y = fct.donnees_partie3()
 
@@ -117,17 +116,33 @@ def cercle():
 
     b[:, 0] = x**2+y**2
 
-    result, er = ResolMCEN(a, b)
+    if methode == 0:
+        result, er = ResolMCEN(a, b)
+        alpha1, beta1, gamma1 = result
+        x01 = alpha1
+        y01 = beta1
+        r1 = np.sqrt(alpha1 ** 2 + beta1 ** 2 + gamma1)
+        x1, y1 = draw_circle(x01, y01, r1)
+        plt.scatter(x1, y1, s=2, label='ResolMCEN')
+    if methode == 1:
+        result = ResolMCQr(a, b)
+        alpha2, beta2, gamma2 = result
+        x02 = alpha2
+        y02 = beta2
+        r2 = np.sqrt(alpha2 ** 2 + beta2 ** 2 + gamma2)
+        x2, y2 = draw_circle(x02, y02, r2)
+        plt.scatter(x2, y2, s=2, label='ResolMCQr')
+    if methode == 3:
+        result, er = ResolMCNP(a, b)
+        alpha3, beta3, gamma3 = result
+        x03 = alpha3
+        y03 = beta3
+        r3 = np.sqrt(alpha3 ** 2 + beta3 ** 2 + gamma3)
+        x3, y3 = draw_circle(x03, y03, r3)
+        plt.scatter(x3, y3, s=2, label='ResolMCNP')
 
-    alpha, beta, gamma = result
-
-    x0 = alpha
-    y0 = beta
-    r = np.sqrt(alpha**2 + beta**2 + gamma)
-    x1, y1 = draw_circle(x0, y0, r)
-
-    plt.scatter(x1, y1, s=2)
     plt.scatter(x, y, s=20)
+    plt.legend()
     plt.show()
 
 
@@ -138,10 +153,8 @@ def draw_circle(x0, y0, r):
 
     for i in np.arange(-r+x0, r+x0, 0.01):
         for j in np.arange(-r+y0, r+y0, 0.01):
-            if r**2 >= pow(i - x0, 2) + pow(j - y0, 2) >= (r ** 2)-0.5:
+            if r**2 >= pow(i - x0, 2) + pow(j - y0, 2) >= (r ** 2)-0.3:
                 x.append(i)
                 y.append(j)
-
-    print(x, y)
 
     return x, y
